@@ -1,18 +1,32 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Home</ion-title>
+    <ion-title>Choose alert</ion-title>
   </ion-navbar>
+  <ion-toolbar>
+    <ion-segment color="primary" [(ngModel)]="testMode">
+      <ion-segment-button value="testModeOff">
+        Test Mode: Off
+      </ion-segment-button>
+      <ion-segment-button value="testModeOn">
+        Test Mode: On
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <h3>Ionic Menu Starter</h3>
-
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
-
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+  
+  <ion-list>
+    <button padding ion-item [hidden]="panicHidden" color="Red" full (click)="panic()">
+      <br> Panic!
+      <br>
+      <br>
+    </button>
+  </ion-list>
+  <hr>
+  <button ion-item color={{button.alertColor}} 
+    (click)="chooseAlert(button.alertID, button.alertName, true)" 
+    *ngFor="let button of realButtons"
+    full>{{button.alertName}}</button>
+  <button [hidden]="!testModeState" ion-item color={{button.alertColor}} *ngFor="let button of testButtons" full>{{button.alertName}}</button>
 </ion-content>

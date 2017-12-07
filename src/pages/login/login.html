@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>SMECS Login</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="login-content" padding>
+  <ion-row class="logo-row">
+    <ion-col></ion-col>
+    <ion-col width-67>
+      <img src="http://placehold.it/300x200">
+    </ion-col>
+    <ion-col></ion-col>
+  </ion-row>
+  <ion-card>
+    <ion-card-content>
+      <form (ngSubmit)="login(email, pin)" #registerForm="ngForm">
+        <ion-row>
+          <ion-col>
+            <ion-list inset>
+
+              <ion-item>
+                <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="email" required></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-input type="password" placeholder="Pin" name="pin" [(ngModel)]="pin" required></ion-input>
+              </ion-item>
+
+            </ion-list>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="signup-col">
+            <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Login</button>
+          </ion-col>
+        </ion-row>
+      </form>
+      <ion-col>
+        <button ion-button block outline (click)="forgot()">Forgot Pin</button>
+      </ion-col>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "473933801379",
+    "firebase_url": "https://smecs-920c5.firebaseio.com",
+    "project_id": "smecs-920c5",
+    "storage_bucket": "smecs-920c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473933801379:android:4ff06d37de2a60c7",
+        "android_client_info": {
+          "package_name": "com.bansheeus.smecs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "473933801379-j9qogq2gked67ugcli8nc09hel18rq6p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQlG_rnCLmqQIXQnhcmj9ypP0rmpiXezI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

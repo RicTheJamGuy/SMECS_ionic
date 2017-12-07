@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{title}}</ion-title>
+  </ion-navbar>
+  <ion-toolbar>
+    <ion-segment color="primary" [(ngModel)]="testMode">
+      <ion-segment-button value="testModeOff">
+        Test Mode: Off
+      </ion-segment-button>
+      <ion-segment-button value="testModeOn">
+        Test Mode: On
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div #zoom class="zoom">
+    <ion-img width="100%" height="100%" src="http://placehold.it/300x200" (click)="onMapClick($event)"></ion-img>
+  </div>
+  <button ion-button full (click)="onFloorLocation(100, 100)">Submit</button>
+</ion-content>

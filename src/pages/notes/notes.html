@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Choose alert</ion-title>
+  </ion-navbar>
+  <ion-toolbar>
+    <ion-segment color="primary" [(ngModel)]="testMode">
+      <ion-segment-button value="testModeOff">
+        Test Mode: Off
+      </ion-segment-button>
+      <ion-segment-button value="testModeOn">
+        Test Mode: On
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <input name="notes" class="text" placeholder="{{notePlaceholder}}">
+  <button ion-button full (click)="onNotes(notes)">Submit</button>
+</ion-content>
