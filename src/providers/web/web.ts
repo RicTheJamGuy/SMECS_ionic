@@ -4,12 +4,13 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class WebProvider {
-  //baseURL: string = 'http://174.138.58.155:1000'
-  //baseURL: string = 'http://192.168.86.27:1000'
-  //baseURL: string = 'http://localhost:1000'
-  //baseURL: string = 'http://192.168.3.248:1000';
-  //baseURL: string = 'http://10.16.255.213:1000'
-  baseURL: string = 'http://172.21.154.114:1000'
+  //baseURL: string = 'http://174.138.58.155:1000';
+  //baseURL: string = 'http://192.168.86.27:1000';
+  //baseURL: string = 'http://localhost:1000';
+  baseURL: string = 'http://192.168.3.248:1000';
+  //baseURL: string = 'http://172.21.154.114:1000';
+  //baseURL: string = 'http://192.168.86.21:1000';
+  //baseURL: string = 'http://192.168.3.140:1000';
 
   constructor(public http: Http) {
   }

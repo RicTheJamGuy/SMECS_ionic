@@ -52,13 +52,13 @@ export class HomePage {
     this.web.chooseAlertsGet(this.token)
       .subscribe(response => {
         if (response.success == false) this.navCtrl.setRoot('LoginPage');
-        if (response.testModeOnArrays[0][0].alertID == 1) {
+        if (response.testModeOnArrayReal[0].alertID == 1) {
           this.panicHidden = false;
-          response.testModeOnArrays[0].splice(0, 1);
+          response.testModeOnArrayReal.splice(0, 1);
         }
-        if (response.testModeOnArrays != undefined) {
-          this.realButtons = response.testModeOnArrays[0];
-          this.testButtons = response.testModeOnArrays[1];
+        if (response.testModeOnArrayReal != undefined) {
+          this.realButtons = response.testModeOnArrayReal;
+          this.testButtons = response.testModeOnArrayTest;
         }
       });
   }

@@ -1,5 +1,5 @@
-import { Firebase } from '@ionic-native/firebase';
-import { Push } from '@ionic-native/push';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
 import { Geolocation } from '@ionic-native/geolocation';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -16,11 +16,10 @@ import { ForgotSuccessPage } from './../pages/forgot-success/forgot-success';
 import { FloorPage } from '../pages/floor/floor';
 import { FloorLocationPage } from './../pages/floor-location/floor-location';
 import { NotesPage } from './../pages/notes/notes';
+import { AlertPage } from '../pages/alert/alert';
 
 import { WebProvider } from '../providers/web/web';
-
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import { Firebase } from '@ionic-native/firebase';
 
 @NgModule({
   declarations: [
@@ -30,7 +29,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ForgotSuccessPage,
     FloorPage,
     FloorLocationPage,
-    NotesPage
+    NotesPage,
+    AlertPage
   ],
   imports: [
     BrowserModule,
@@ -48,14 +48,14 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ForgotSuccessPage,
     FloorPage,
     FloorLocationPage,
-    NotesPage
+    NotesPage,
+    AlertPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     WebProvider,
     Geolocation,
-    Push,
     Firebase,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

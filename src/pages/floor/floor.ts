@@ -57,10 +57,6 @@ export class FloorPage {
       })
   }
 
-  onBack() {
-    this.navCtrl.pop();
-  }
-
   onFloor(floorID, floorName, floorPhoto) {
     var data: any; //this will contain all the data the goes to the next page.
     this.web.floorsPost(floorID, floorName, floorPhoto, this.data.testModeON, this.data._id, this.token)
@@ -71,6 +67,7 @@ export class FloorPage {
           }
           if (response.redirect == 'floorMap') this.navCtrl.push(FloorLocationPage, data);
           if (response.redirect == 'notes') this.navCtrl.push(NotesPage, data);
+          if (response.redirect == 'home') this.navCtrl.push(HomePage);
         }
       })
   }

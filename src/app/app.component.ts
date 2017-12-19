@@ -1,16 +1,24 @@
+import { AlertPage } from './../pages/alert/alert';
 import { Component, ViewChild } from '@angular/core';
-import { Platform, AlertController, Nav } from 'ionic-angular';
+import { Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Push, PushObject, PushOptions } from '@ionic-native/push';
-import { Firebase } from '@ionic-native/firebase';
 import { Storage } from '@ionic/storage';
+import { Firebase } from '@ionic-native/firebase';
+import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 
 import { LoginPage } from './../pages/login/login';
+
+export class NotificationModel {
+	public body: string;
+	public title: string;
+	public tap: boolean
+}
 
 @Component({
   templateUrl: 'app.html'
 })
+
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
@@ -22,16 +30,15 @@ export class MyApp {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    private push: Push,
-    private firebase: Firebase,
     private storage: Storage,
+    private firebase: Firebase,
     private alertCtrl: AlertController
   ) {
     this.initializeApp();
 
     // Initialize side-menu and navigation
     this.pages = [
-      //{ title: 'Home', component: HomePage }
+      //{ title: 'Home', component: LoginPage }
     ];
   }
 
@@ -41,22 +48,13 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.pushsetup();
 
-      if (this.platform.is('cordova')) {
-        this.firebase.getToken()
-          .then(pushToken => {
-            this.storage.set('pushToken', pushToken); // save the pushToken
-            console.log(pushToken);
-          })
-          .catch(error => alert('Error getting token' + error));
-
-        this.firebase.onTokenRefresh()
-          .subscribe((pushToken: string) => {
-            this.storage.set('pushToken', pushToken);
-            //alert(pushToken);
-          });
-      }
+			if (this.platform.is('cordova')) {
+				// Initialize push notification feature
+				this.platform.is('android') ? this.initializeFireBaseAndroid() : this.initializeFireBaseIos();
+			} else {
+				console.log('Push notifications are not enabled since this is not a real device');
+			}
     });
   }
 
@@ -64,34 +62,93 @@ export class MyApp {
     this.nav.setRoot(page.component);
   }
 
-  pushsetup() {
-    const options: PushOptions = {
-      android: {},
-      ios: {
-        alert: 'true',
-        badge: true,
-        sound: 'false'
-      }
-    };
-
-    const pushObject: PushObject = this.push.init(options);
-
-    pushObject.on('notification').subscribe((notification: any) => {
-      if (notification.additionalData.foreground) {
-        let youralert = this.alertCtrl.create({
-          title: 'New Push notification',
-          message: notification.message
-        });
-        console.log(notification.message);
-        youralert.present();
-      }
-    });
-
-    pushObject.on('registration').subscribe((registration: any) => {
-      console.log(registration.registrationId);
-      alert(registration.registrationId);
-    });
-
-    pushObject.on('error').subscribe(error => alert('Error with Push plugin' + error));
+  onLogout() {
+    this.storage.remove('token');
+    this.nav.setRoot(LoginPage);
   }
+
+  private initializeFireBaseAndroid(): Promise<any> {
+		return this.firebase.getToken()
+			.catch(error => console.error('Error getting token', error))
+			.then(token => {
+
+				console.log(`The token is ${token}`);
+
+				Promise.all([
+					//this.firebase.subscribe('firebase-app'), 	// Subscribe to the entire app
+					//this.firebase.subscribe('android'),			// Subscribe to android users topic
+					//this.firebase.subscribe('userid-1') 		// Subscribe using the user id (hardcoded in this example)
+				]).then((result) => {
+					//if (result[0]) console.log(`Subscribed to FirebaseDemo`);
+					//if (result[1]) console.log(`Subscribed to Android`);
+				  //if (result[2]) console.log(`Subscribed as User`);
+					this.subscribeToPushNotificationEvents();
+				});
+			});
+	}
+
+	private initializeFireBaseIos(): Promise<any> {
+		return this.firebase.grantPermission()
+			.catch(error => console.error('Error getting permission', error))
+			.then(() => {
+				this.firebase.getToken()
+					.catch(error => console.error('Error getting token', error))
+					.then(token => {
+
+						console.log(`The token is ${token}`);
+
+						Promise.all([
+							//this.firebase.subscribe('firebase-app'),
+							//this.firebase.subscribe('ios'),
+							//this.firebase.subscribe('userid-2')
+						]).then((result) => {
+
+							//if (result[0]) console.log(`Subscribed to FirebaseDemo`);
+							//if (result[1]) console.log(`Subscribed to iOS`);
+							//if (result[2]) console.log(`Subscribed as User`);
+
+							this.subscribeToPushNotificationEvents();
+						});
+					});
+			})
+
+	}
+
+	private saveToken(token: any): Promise<any> {
+		// Send the token to the server
+		console.log('Sending token to the server...');
+		return Promise.resolve(true);
+	}
+
+	private subscribeToPushNotificationEvents(): void {
+
+		// Handle token refresh
+		this.firebase.onTokenRefresh().subscribe(
+			token => {
+				console.log(`The new token is ${token}`);
+				this.saveToken(token);
+			},
+			error => {
+				console.error('Error refreshing token', error);
+			});
+
+		// Handle incoming notifications
+		this.firebase.onNotificationOpen().subscribe(
+			(notification: NotificationModel) => {
+
+				!notification.tap
+					? console.log('The user was using the app when the notification arrived...')
+					: console.log('The app was closed when the notification arrived...');
+
+				let notificationAlert = this.alertCtrl.create({
+					title: notification.title,
+					message: notification.body,
+					buttons: ['Ok']
+				});
+				notificationAlert.present();
+			},
+			error => {
+				console.error('Error getting the notification', error);
+			});
+	}
 }

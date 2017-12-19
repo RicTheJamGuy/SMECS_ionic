@@ -53,7 +53,6 @@ export class FloorLocationPage {
           this.floorID = response.floorID;
           this.floorName = response.floorName;
           this.floorPhoto = response.floorPhoto;
-          console.log(this.floorPhoto);
         }
         else this.navCtrl.setRoot(HomePage);
       })

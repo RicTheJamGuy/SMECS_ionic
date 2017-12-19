@@ -29,9 +29,8 @@ export class LoginPage {
           this.navCtrl.setRoot('LoginPage');
         }
       });
-      this.storage.get('pushToken')
+    this.storage.get('pushToken')
       .then((pushToken) => {
-        console.log(pushToken);
         this.pushToken = pushToken;
       });
   }
@@ -48,7 +47,7 @@ export class LoginPage {
       message: 'Username or pin incorrect',
       duration: 2000,
       position: 'middle'
-    })
+    });
 
     loader.present();
 
