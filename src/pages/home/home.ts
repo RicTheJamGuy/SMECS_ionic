@@ -14,7 +14,8 @@ export class HomePage {
   token: any;
   realButtons: any;
   testButtons: any;
-  panicHidden = true;
+  panicHiddenReal = true;
+  panicHiddenTest = true;
 
   testMode = 'testModeOff';
   testModeState = false;
@@ -54,10 +55,14 @@ export class HomePage {
       .subscribe(response => {
         if (response.success == false) this.navCtrl.setRoot('LoginPage');
         if (response.testModeOnArrayReal[0].alertID == 1) {
-          this.panicHidden = false;
+          this.panicHiddenReal = false;
           response.testModeOnArrayReal.splice(0, 1);
         }
-        if (response.testModeOnArrayReal != undefined) {
+        if (response.testModeOnArrayTest[0].alertID == 1) {
+          this.panicHiddenTest = false;
+          response.testModeOnArrayTest.splice(0, 1);
+        }
+        if (response.testModeOnArrayReal != undefined && response.testModeOnArrayTest != undefined) {
           this.realButtons = response.testModeOnArrayReal;
           this.testButtons = response.testModeOnArrayTest;
         }

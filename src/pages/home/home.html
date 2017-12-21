@@ -20,26 +20,32 @@
 </ion-header>
 
 <ion-content padding>
-  
-  <ion-list>
-    <button padding ion-item [hidden]="panicHidden" color="Red" full (click)="panic()">
-      <br> Panic!
-      <br>
-      <br>
-    </button>
-  </ion-list>
-  <hr>
-  <button ion-item [hidden]="testModeState" color={{button.alertColor}} 
-    (click)="chooseAlert(button.alertID, button.alertName, true)" 
-    *ngFor="let button of realButtons"
-    full>
-    {{button.alertName}}
-  </button>
 
-  <button [hidden]="!testModeState" ion-item color={{button.alertColor}}
-  (click)="chooseAlert(button.alertID, button.alertName, false)" 
-    *ngFor="let button of testButtons"
-    full>
-    {{button.alertName}}
-  </button>
+  <div [hidden]="testModeState">
+    <ion-list>
+      <button padding ion-item [hidden]="panicHiddenReal" color="Red" full (click)="panic()">
+        <br> Panic!
+        <br>
+        <br>
+      </button>
+    </ion-list>
+    <button ion-item color={{button.alertColor}} (click)="chooseAlert(button.alertID, button.alertName, true)"
+      *ngFor="let button of realButtons" full>
+      {{button.alertName}}
+    </button>
+  </div>
+
+  <div [hidden]="!testModeState">
+    <ion-list>
+      <button padding ion-item [hidden]="panicHiddenTest" color="Red" full (click)="panic()">
+        <br> Panic!
+        <br>
+        <br>
+      </button>
+    </ion-list>
+    <button ion-item color={{button.alertColor}} (click)="chooseAlert(button.alertID, button.alertName, false)"
+      *ngFor="let button of testButtons" full>
+      {{button.alertName}}
+    </button>
+  </div>
 </ion-content>
