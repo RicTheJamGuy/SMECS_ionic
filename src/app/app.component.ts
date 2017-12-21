@@ -16,38 +16,38 @@ export class NotificationModel {
 }
 
 @Component({
-  templateUrl: 'app.html'
+	templateUrl: 'app.html'
 })
 
 export class MyApp {
-  @ViewChild(Nav) nav: Nav;
+	@ViewChild(Nav) nav: Nav;
 
-  rootPage: any = LoginPage;
+	rootPage: any = LoginPage;
 
-  pages: Array<{ title: string, component: any }>;
+	pages: Array<{ title: string, component: any }>;
 
-  constructor(
-    public platform: Platform,
-    public statusBar: StatusBar,
-    public splashScreen: SplashScreen,
-    private storage: Storage,
-    private firebase: Firebase,
-    private alertCtrl: AlertController
-  ) {
-    this.initializeApp();
+	constructor(
+		public platform: Platform,
+		public statusBar: StatusBar,
+		public splashScreen: SplashScreen,
+		private storage: Storage,
+		private firebase: Firebase,
+		private alertCtrl: AlertController
+	) {
+		this.initializeApp();
 
-    // Initialize side-menu and navigation
-    this.pages = [
-      //{ title: 'Home', component: LoginPage }
-    ];
-  }
+		// Initialize side-menu and navigation
+		this.pages = [
+			//{ title: 'Home', component: LoginPage }
+		];
+	}
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+	initializeApp() {
+		this.platform.ready().then(() => {
+			// Okay, so the platform is ready and our plugins are available.
+			// Here you can do any higher level native things you might need.
+			this.statusBar.styleDefault();
+			this.splashScreen.hide();
 
 			if (this.platform.is('cordova')) {
 				// Initialize push notification feature
@@ -55,35 +55,23 @@ export class MyApp {
 			} else {
 				console.log('Push notifications are not enabled since this is not a real device');
 			}
-    });
-  }
+		});
+	}
 
-  openPage(page) {
-    this.nav.setRoot(page.component);
-  }
+	openPage(page) {
+		this.nav.setRoot(page.component);
+	}
 
-  onLogout() {
-    this.storage.remove('token');
-    this.nav.setRoot(LoginPage);
-  }
+	onLogout() {
+		this.storage.remove('token');
+		this.nav.setRoot(LoginPage);
+	}
 
-  private initializeFireBaseAndroid(): Promise<any> {
+	private initializeFireBaseAndroid(): Promise<any> {
 		return this.firebase.getToken()
 			.catch(error => console.error('Error getting token', error))
 			.then(token => {
-
 				console.log(`The token is ${token}`);
-
-				Promise.all([
-					//this.firebase.subscribe('firebase-app'), 	// Subscribe to the entire app
-					//this.firebase.subscribe('android'),			// Subscribe to android users topic
-					//this.firebase.subscribe('userid-1') 		// Subscribe using the user id (hardcoded in this example)
-				]).then((result) => {
-					//if (result[0]) console.log(`Subscribed to FirebaseDemo`);
-					//if (result[1]) console.log(`Subscribed to Android`);
-				  //if (result[2]) console.log(`Subscribed as User`);
-					this.subscribeToPushNotificationEvents();
-				});
 			});
 	}
 
@@ -94,21 +82,7 @@ export class MyApp {
 				this.firebase.getToken()
 					.catch(error => console.error('Error getting token', error))
 					.then(token => {
-
 						console.log(`The token is ${token}`);
-
-						Promise.all([
-							//this.firebase.subscribe('firebase-app'),
-							//this.firebase.subscribe('ios'),
-							//this.firebase.subscribe('userid-2')
-						]).then((result) => {
-
-							//if (result[0]) console.log(`Subscribed to FirebaseDemo`);
-							//if (result[1]) console.log(`Subscribed to iOS`);
-							//if (result[2]) console.log(`Subscribed as User`);
-
-							this.subscribeToPushNotificationEvents();
-						});
 					});
 			})
 

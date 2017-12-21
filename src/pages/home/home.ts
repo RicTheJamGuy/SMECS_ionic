@@ -17,6 +17,7 @@ export class HomePage {
   panicHidden = true;
 
   testMode = 'testModeOff';
+  testModeState = false;
 
   constructor(public navCtrl: NavController, private geolocation: Geolocation,
     public web: WebProvider, private storage: Storage) {
@@ -76,4 +77,9 @@ export class HomePage {
         }
       })
   }
+
+  onTestMode(mode: boolean) {
+      this.testModeState = mode;
+  }
+
 }

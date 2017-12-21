@@ -9,10 +9,10 @@
   </ion-navbar>
   <ion-toolbar>
     <ion-segment color="primary" [(ngModel)]="testMode">
-      <ion-segment-button value="testModeOff">
+      <ion-segment-button value="testModeOff" (ionSelect)="onTestMode(false)">
         Test Mode: Off
       </ion-segment-button>
-      <ion-segment-button value="testModeOn">
+      <ion-segment-button value="testModeOn" (ionSelect)="onTestMode(true)">
         Test Mode: On
       </ion-segment-button>
     </ion-segment>
@@ -29,9 +29,17 @@
     </button>
   </ion-list>
   <hr>
-  <button ion-item color={{button.alertColor}} 
+  <button ion-item [hidden]="testModeState" color={{button.alertColor}} 
     (click)="chooseAlert(button.alertID, button.alertName, true)" 
     *ngFor="let button of realButtons"
-    full>{{button.alertName}}</button>
-  <button [hidden]="!testModeState" ion-item color={{button.alertColor}} *ngFor="let button of testButtons" full>{{button.alertName}}</button>
+    full>
+    {{button.alertName}}
+  </button>
+
+  <button [hidden]="!testModeState" ion-item color={{button.alertColor}}
+  (click)="chooseAlert(button.alertID, button.alertName, false)" 
+    *ngFor="let button of testButtons"
+    full>
+    {{button.alertName}}
+  </button>
 </ion-content>
