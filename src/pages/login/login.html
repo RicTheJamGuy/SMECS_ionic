@@ -32,13 +32,17 @@
         </ion-row>
 
         <ion-row>
-          <ion-col class="signup-col">
+          <ion-col>
             <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Login</button>
           </ion-col>
         </ion-row>
       </form>
       <ion-col>
         <button ion-button block outline (click)="forgot()">Forgot Pin</button>
+      </ion-col>
+      <ion-col>
+        <label>Using {{ipAddress}}</label>
+        <button ion-button block outline (click)="promptForIP()">Change IP</button>
       </ion-col>
     </ion-card-content>
   </ion-card>

@@ -1,7 +1,7 @@
 import { Storage } from '@ionic/storage';
 import { WebProvider } from './../../providers/web/web';
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, Gesture, Content } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Gesture, Content, ToastController } from 'ionic-angular';
 
 import { HomePage } from '../home/home';
 import { NotesPage } from '../notes/notes';
@@ -19,19 +19,32 @@ export class FloorLocationPage {
   data: any;
   floorID: any;
   floorName: string;
-  floorPhoto: string;
+  floorPlan: string;
+  floorPlanURL: string;
   title: string;
   testModeOnArrays: any[];
   testModeOn: boolean;
+  sniperCoordinateX: any;
+  sniperCoordinateY: any;
+  ipAddress: any;
 
   testMode = 'testModeOff';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private web: WebProvider,
-    public storage: Storage) {
+    public storage: Storage, private toastCtrl: ToastController) {
   }
 
-  ionViewDidLoad() {
+  ionViewWillEnter() {
     this.data = this.navParams.data;
+    this.floorPlan = this.data.floorPlan;
+    console.log(this.floorPlan);
+
+    this.storage.get('ipAddress')
+      .then((ipAddress) => {
+        this.ipAddress = ipAddress;
+        this.floorPlanURL = 'http://' + this.ipAddress + ':1000/public/floorPlans/' + this.floorPlan
+      }
+      );
 
     this.storage.get('token')
       .then((token) => {
@@ -45,17 +58,17 @@ export class FloorLocationPage {
 
   getFloorLocation() {
     this.web.floorLocationGet(this.data._id, this.token)
-      .subscribe(response => {
+      .then(response => {
+        console.log(response);
         if (response.success == true) {
           this.testModeOn = response.testModeOn;
           this.testModeOnArrays = response.testModeOnArrays;
           this.title = response.title;
           this.floorID = response.floorID;
           this.floorName = response.floorName;
-          this.floorPhoto = response.floorPhoto;
         }
         else this.navCtrl.setRoot(HomePage);
-      })
+      });
   }
 
   onBack() {
@@ -63,19 +76,32 @@ export class FloorLocationPage {
   }
 
   onMapClick(e) {
-    console.log('X: ', e.offsetX);
-    console.log('Y: ', e.offsetY);
+    this.sniperCoordinateX = e.offsetX - 32;
+    this.sniperCoordinateY = e.offsetY - 32;
+
+    document.getElementById("div2").className = "div3";
+    document.getElementById("div2").style.left = this.sniperCoordinateX + 'px';
+    document.getElementById("div2").style.top = this.sniperCoordinateY + 'px';
   }
 
   onFloorLocation(sniperCoordinateX, sniperCoordinateY) {
     var data: any; //this will contain all the data the goes to the next page.
     this.web.floorLocationPost(this.token, this.data._id, this.data.testModeON, sniperCoordinateX, sniperCoordinateY)
-      .subscribe(response => {
+      .then(response => {
         if (response.success == true) {
           data = {
             _id: this.data._id
           }
           if (response.redirect == 'notes') this.navCtrl.push(NotesPage, data);
+        }
+        else {
+          // setting up toast
+          const toast = this.toastCtrl.create({
+            message: response.message,
+            duration: 2000,
+            position: 'middle'
+          });
+          toast.present();
         }
       })
   }
@@ -135,20 +161,7 @@ export class FloorLocationPage {
       last_x = x;
       last_y = y;
     }
-    /*
-    function onTap(ev) {
-      if (ev.tapCount === 2) {
-        let reset = false;
-        scale += .5;
-        if (scale > 2) {
-          scale = 1;
-          reset = true;
-        }
-        setBounds();
-        reset ? transform(max_x/2, max_y/2) : transform();
-      }
-    }
-    */
+
     function onPinch(ev) {
       // formula to append scale to new scale
       scale = base + (ev.scale * scale - scale) / scale
@@ -186,7 +199,6 @@ export class FloorLocationPage {
       min_y = 0 + scaled_y;
 
       setCoor(-scaled_x, scaled_y);
-      console.info(`x: ${x}, scaled_x: ${scaled_x}, y: ${y}, scaled_y: ${scaled_y}`)
     }
     function setCoor(xx: number, yy: number) {
       x = Math.min(Math.max((last_x + xx), max_x), min_x);

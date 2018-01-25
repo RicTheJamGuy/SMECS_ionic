@@ -5,6 +5,7 @@
 </ion-header>
 
 <ion-content padding>
-  <input name="notes" class="text" placeholder="{{notePlaceholder}}">
+  <ion-label>Notes (optional):</ion-label>
+  <input name="notes" class="textbox" rows="3" placeholder="{{notePlaceholder}}">
   <button ion-button full (click)="onNotes(notes)">Submit</button>
 </ion-content>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 
@@ -15,13 +15,25 @@ import { ForgotPage } from './../forgot/forgot';
 export class LoginPage {
 
   pushToken: any;
+  ipAddress: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public loading: LoadingController,
     public toastCtrl: ToastController,
     public web: WebProvider,
-    public storage: Storage) {
+    public storage: Storage,
+    private alertCtrl: AlertController) {
+
+    this.storage.get('ipAddress')
+      .then((ipAddress) => {
+        if (ipAddress == '') {
+          this.promptForIP();
+        }
+        else {
+          this.ipAddress = ipAddress;
+        }
+      });
 
     this.storage.get('token')
       .then((token) => {
@@ -52,7 +64,7 @@ export class LoginPage {
     loader.present();
 
     this.web.loginPost(email, pin, this.pushToken)
-      .subscribe(response => {
+      .then(response => {
         if (response.success == true) {
           this.storage.set('token', response.token);
           this.navCtrl.setRoot(HomePage);
@@ -66,5 +78,34 @@ export class LoginPage {
 
   forgot() {
     this.navCtrl.push(ForgotPage);
+  }
+
+  promptForIP() {
+    let ipAlert = this.alertCtrl.create({
+      title: 'IP Address',
+      inputs: [
+        {
+          name: 'ipAddress',
+          placeholder: '192.168.0.1'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Ok',
+          handler: data => {
+            console.log(this.ipAddress);
+            this.storage.set('ipAddress', data.ipAddress);
+            this.ipAddress = data.ipAddress;
+            console.log(this.ipAddress);
+          }
+        }
+      ]
+    });
+    ipAlert.present();
+    console.log(this.ipAddress);
   }
 }

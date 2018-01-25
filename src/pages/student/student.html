@@ -1,0 +1,20 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>student</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-searchbar (ionInput)="getStudents($event)"></ion-searchbar>
+  <ion-list>
+    <ion-item *ngFor="let student of searchStudents" (click)="onClick(student.name, student.photo)">
+      <ion-avatar item-start>
+        <img src="http://{{ipAddress}}:1000/public/photosStudents/{{student.photo}}">
+      </ion-avatar>
+      {{ student.name }}
+    </ion-item>
+  </ion-list>
+</ion-content>

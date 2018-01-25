@@ -1,9 +1,10 @@
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { Component } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
 import { WebProvider } from './../../providers/web/web';
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HomePage } from '../home/home';
+import { SummaryPage } from './../summary/summary';
 
 @IonicPage()
 @Component({
@@ -21,7 +22,7 @@ export class NotesPage {
   testMode = 'testModeOff';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private web: WebProvider,
-    public storage: Storage) {
+    public storage: Storage, private toastCtrl:ToastController) {
 
   }
   ionViewDidLoad() {
@@ -39,7 +40,7 @@ export class NotesPage {
 
   getNotes() {
     this.web.notesGet(this.data._id, this.token)
-      .subscribe(response => {
+      .then(response => {
         if (response.success == true) {
           this.testModeOn = response.testModeOn;
           this.testModeOnArrays = response.testModeOnArrays;
@@ -51,9 +52,26 @@ export class NotesPage {
   }
   
   onNotes(notes) {
+    var data;
+    
     this.web.notesPost(this.token, this.data._id, this.data.testModeON, notes)
-      .subscribe(response => {
-        if (response.success == true) console.log('DONE!!');
+      .then(response => {
+        if (response.success == true) {
+          data = {
+            _id: this.data._id
+          }
+          if (response.redirect == 'summary') this.navCtrl.push(SummaryPage, data);
+          if (response.redirect == 'home') this.navCtrl.push(HomePage);
+        }
+        else {
+          // setting up toast
+          const toast = this.toastCtrl.create({
+            message: response.message,
+            duration: 2000,
+            position: 'middle'
+          });
+          toast.present();
+        }
       })
   }
 }

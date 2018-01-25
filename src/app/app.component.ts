@@ -7,7 +7,9 @@ import { Storage } from '@ionic/storage';
 import { Firebase } from '@ionic-native/firebase';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 
+import { SettingsPage } from './../pages/settings/settings';
 import { LoginPage } from './../pages/login/login';
+import { HomePage } from '../pages/home/home';
 
 export class NotificationModel {
 	public body: string;
@@ -38,7 +40,8 @@ export class MyApp {
 
 		// Initialize side-menu and navigation
 		this.pages = [
-			//{ title: 'Home', component: LoginPage }
+			{ title: 'Settings', component: SettingsPage },
+			{ title: 'Home', component: HomePage }
 		];
 	}
 
@@ -109,6 +112,7 @@ export class MyApp {
 		// Handle incoming notifications
 		this.firebase.onNotificationOpen().subscribe(
 			(notification: NotificationModel) => {
+				console.log(notification);
 
 				!notification.tap
 					? console.log('The user was using the app when the notification arrived...')

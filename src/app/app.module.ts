@@ -6,8 +6,11 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
 import { HttpModule } from '@angular/http';
+import { NativeRingtones } from '@ionic-native/native-ringtones';
 import { MyApp } from './app.component';
+import { Firebase } from '@ionic-native/firebase';
 
+import { SettingsPage } from './../pages/settings/settings';
 import { LoginPageModule } from './../pages/login/login.module';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from './../pages/login/login';
@@ -17,9 +20,10 @@ import { FloorPage } from '../pages/floor/floor';
 import { FloorLocationPage } from './../pages/floor-location/floor-location';
 import { NotesPage } from './../pages/notes/notes';
 import { AlertPage } from '../pages/alert/alert';
+import { StudentPage } from './../pages/student/student';
+import { SummaryPage } from './../pages/summary/summary';
 
 import { WebProvider } from '../providers/web/web';
-import { Firebase } from '@ionic-native/firebase';
 
 @NgModule({
   declarations: [
@@ -30,7 +34,10 @@ import { Firebase } from '@ionic-native/firebase';
     FloorPage,
     FloorLocationPage,
     NotesPage,
-    AlertPage
+    AlertPage,
+    SettingsPage,
+    SummaryPage,
+    StudentPage
   ],
   imports: [
     BrowserModule,
@@ -49,7 +56,10 @@ import { Firebase } from '@ionic-native/firebase';
     FloorPage,
     FloorLocationPage,
     NotesPage,
-    AlertPage
+    AlertPage,
+    SettingsPage,
+    SummaryPage,
+    StudentPage
   ],
   providers: [
     StatusBar,
@@ -57,6 +67,7 @@ import { Firebase } from '@ionic-native/firebase';
     WebProvider,
     Geolocation,
     Firebase,
+    NativeRingtones,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

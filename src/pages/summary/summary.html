@@ -1,0 +1,24 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Summary</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <div>
+    <h1 ion-text>Test Mode: {{testModeOn}}</h1>
+    
+    <h1 ion-text>Alert Name:</h1>
+    <h3 ion-text color="{{alertColor}}">{{alertName}}</h3>
+  </div>
+  <div>
+    <h1 ion-text>Location:</h1>
+    <h3 ion-text>{{floorName}}</h3>
+  </div>
+  <div>
+    <button ion-button full (click)="onSend()">Send alert</button>
+  </div>
+</ion-content>

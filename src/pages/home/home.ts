@@ -5,6 +5,7 @@ import { NavController } from 'ionic-angular';
 
 import { FloorPage } from './../floor/floor';
 import { WebProvider } from './../../providers/web/web';
+import { StudentPage } from '../student/student';
 
 @Component({
   selector: 'page-home',
@@ -52,16 +53,21 @@ export class HomePage {
 
   getButtons() {
     this.web.chooseAlertsGet(this.token)
-      .subscribe(response => {
+      .then(response => {
         if (response.success == false) this.navCtrl.setRoot('LoginPage');
-        if (response.testModeOnArrayReal[0].alertID == 1) {
-          this.panicHiddenReal = false;
-          response.testModeOnArrayReal.splice(0, 1);
+        if (response.testModeOnArrayReal[0] != undefined) {
+          if (response.testModeOnArrayReal[0].alertID == 1) {
+            this.panicHiddenReal = false;
+            response.testModeOnArrayReal.splice(0, 1);
+          }
         }
-        if (response.testModeOnArrayTest[0].alertID == 1) {
-          this.panicHiddenTest = false;
-          response.testModeOnArrayTest.splice(0, 1);
+        if (response.testModeOnArrayTest[0] != undefined) {
+          if (response.testModeOnArrayTest[0].alertID == 1) {
+            this.panicHiddenTest = false;
+            response.testModeOnArrayTest.splice(0, 1);
+          }
         }
+
         if (response.testModeOnArrayReal != undefined && response.testModeOnArrayTest != undefined) {
           this.realButtons = response.testModeOnArrayReal;
           this.testButtons = response.testModeOnArrayTest;
@@ -73,18 +79,19 @@ export class HomePage {
     var data: any; //this will contain all the data the goes to the next page.
 
     this.web.chooseAlertsPost(alertID, alertName, testModeON, this.token)
-      .subscribe(response => {
+      .then(response => {
         if (response.success == true) {
           data = {
             _id: response._id
           }
           if (response.redirect == 'floor') this.navCtrl.push(FloorPage, data);
+          if (response.redirect == 'student') this.navCtrl.push(StudentPage, data);
         }
       })
   }
 
   onTestMode(mode: boolean) {
-      this.testModeState = mode;
+    this.testModeState = mode;
   }
 
 }

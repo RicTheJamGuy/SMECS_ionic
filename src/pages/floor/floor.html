@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content padding>
-  <button ion-button *ngFor="let floor of floors" full (click)="onFloor(floor.floorID, floor.floorName, floor.floorPhoto)">{{floor.floorName}}</button>
+  <button ion-button *ngFor="let floor of floors" full (click)="onFloor(floor.floorID, floor.floorName, floor.floorPlan)">{{floor.floorName}}</button>
   <hr>
   <button ion-button full (click)="onFloor(null, null, null)">Skip floor</button>
 </ion-content>
