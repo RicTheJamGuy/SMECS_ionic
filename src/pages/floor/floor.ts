@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { WebProvider } from './../../providers/web/web';
@@ -28,12 +28,11 @@ export class FloorPage {
   floorPhoto: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private web: WebProvider,
-    public storage: Storage, private toastCtrl:ToastController) {
+    public storage: Storage, private alertCtrl:AlertController) {
   }
 
   ionViewDidLoad() {
     this.data = this.navParams.data;
-    console.log(this.data);
 
     this.storage.get('token')
       .then((token) => {
@@ -63,24 +62,22 @@ export class FloorPage {
     this.web.floorsPost(floorID, floorName, floorPlan, this.data.testModeON, this.data._id, this.token)
       .then(response => {
         if (response.success == true) {
-          console.log(response);
           data = {
             _id: this.data._id,
             floorPlan: floorPlan
           }
-          if (response.redirect == 'floorMap') this.navCtrl.push(FloorLocationPage, data);
-          if (response.redirect == 'notes') this.navCtrl.push(NotesPage, data);
-          if (response.redirect == 'home') this.navCtrl.push(HomePage);
         }
         else {
-          // setting up toast
-          const toast = this.toastCtrl.create({
-            message: response.message,
-            duration: 2000,
-            position: 'middle'
+          let alert = this.alertCtrl.create({
+            title: 'Error',
+            subTitle: response.message,
+            buttons: ['Dismiss']
           });
-          toast.present();
+          alert.present();
         }
+        if (response.redirect == 'floorMap') this.navCtrl.push(FloorLocationPage, data);
+        if (response.redirect == 'notes') this.navCtrl.push(NotesPage, data);
+        if (response.redirect == 'home') this.navCtrl.popToRoot();
       })
   }
 }

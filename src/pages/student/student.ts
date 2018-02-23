@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { WebProvider } from '../../providers/web/web';
@@ -21,7 +21,7 @@ export class StudentPage {
   ipAddress: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage,
-    private web: WebProvider, private toastCtrl:ToastController) {
+    private web: WebProvider, private alertCtrl:AlertController) {
   }
 
   loadStudent() {
@@ -92,13 +92,12 @@ export class StudentPage {
           if (response.redirect == 'notes') this.navCtrl.push(NotesPage, data);
         }
         else {
-          // setting up toast
-          const toast = this.toastCtrl.create({
-            message: response.message,
-            duration: 2000,
-            position: 'middle'
+          let alert = this.alertCtrl.create({
+            title: 'Error',
+            subTitle: response.message,
+            buttons: ['Dismiss']
           });
-          toast.present();
+          alert.present();
         }
       })
 

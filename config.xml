@@ -81,7 +81,6 @@
     <allow-navigation href="http://192.168.3.140:8100" />
     <allow-navigation href="http://172.21.154.114:8100" />
     <allow-navigation href="http://10.16.255.213:8100" />
-    <engine name="android" spec="6.3.0" />
     <plugin name="cordova-plugin-geolocation" spec="^3.0.0">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="To locate you" />
     </plugin>
@@ -96,4 +95,5 @@
     <allow-navigation href="http://192.168.86.27:8100" />
     <allow-navigation href="http://192.168.3.139:8100" />
     <allow-navigation href="http://192.168.86.31:8100" />
+    <engine name="android" spec="~6.3.0" />
 </widget>

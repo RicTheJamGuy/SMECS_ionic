@@ -5,7 +5,9 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-label>Notes (optional):</ion-label>
-  <input name="notes" class="textbox" rows="3" placeholder="{{notePlaceholder}}">
-  <button ion-button full (click)="onNotes(notes)">Submit</button>
+  <form (ngSubmit)="onNotes(notes)" #registerForm="ngForm">
+    <ion-label>Notes (optional):</ion-label>
+    <input name="notes" class="textbox" [(ngModel)]="notes" placeholder="{{notePlaceholder}}">
+    <button ion-button class="submit-btn" full type="submit">Submit</button>
+  </form>
 </ion-content>

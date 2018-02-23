@@ -123,8 +123,8 @@ export class WebProvider {
 
     let body = new URLSearchParams();
     body.append('_id', _id);
-    body.append('sniperCoordinateX', sniperCoordinateX);
-    body.append('sniperCoordinateY', sniperCoordinateY);
+    body.append('coordinateX', sniperCoordinateX);
+    body.append('coordinateY', sniperCoordinateY);
 
     return this.getBaseURL()
       .then(baseURL => {
@@ -221,7 +221,7 @@ export class WebProvider {
   getBaseURL() {
     return this.storage.get('ipAddress')
       .then((ipAddress) => {
-        return 'http://' + ipAddress + ':1000';
+        return 'http://' + ipAddress;
       });
   }
 }

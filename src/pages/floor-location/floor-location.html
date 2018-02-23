@@ -5,15 +5,15 @@
 </ion-header>
 
 <ion-content padding>
-  <div #zoom class="zoom">
-    <div>
-      <img id="div1" class="div1" src="{{floorPlanURL}}" (click)="onMapClick($event)">
-    </div>
-    <div>
-      <img id="div2" class="div2" src="../../assets/imgs/red_sniper.png">
-    </div>
-  </div>
   <div>
-    <button ion-button full (click)="onFloorLocation(sniperCoordinateX, sniperCoordinateY)">Submit</button>
+    <button ion-button full (click)="onFloorLocation()">Submit</button>
+  </div>
+  <div #zoom class="zoom div1" id="div1">
+    <div>
+      <img class="" src="{{floorPlanURL}}" (click)="onMapClick($event)">
+    </div>
+    <div id="div2" class="div2">
+      <img src="./../../assets/imgs/red_sniper.png">
+    </div>
   </div>
 </ion-content>

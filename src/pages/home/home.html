@@ -23,13 +23,11 @@
 
   <div [hidden]="testModeState">
     <ion-list>
-      <button padding ion-item [hidden]="panicHiddenReal" color="Red" full (click)="panic()">
-        <br> Panic!
-        <br>
-        <br>
+      <button ion-button large [hidden]="panicHiddenReal" color="Red" full (click)="panic()">
+        Panic!
       </button>
     </ion-list>
-    <button ion-item color={{button.alertColor}} (click)="chooseAlert(button.alertID, button.alertName, true)"
+    <button ion-button color={{button.alertColor}} (click)="chooseAlert(button.alertID, button.alertName, true)"
       *ngFor="let button of realButtons" full>
       {{button.alertName}}
     </button>
@@ -37,13 +35,11 @@
 
   <div [hidden]="!testModeState">
     <ion-list>
-      <button padding ion-item [hidden]="panicHiddenTest" color="Red" full (click)="panic()">
-        <br> Panic!
-        <br>
-        <br>
+      <button ion-button large [hidden]="panicHiddenTest" color="Red" full (click)="panic()">
+        Panic!
       </button>
     </ion-list>
-    <button ion-item color={{button.alertColor}} (click)="chooseAlert(button.alertID, button.alertName, false)"
+    <button ion-button color={{button.alertColor}} (click)="chooseAlert(button.alertID, button.alertName, false)"
       *ngFor="let button of testButtons" full>
       {{button.alertName}}
     </button>

@@ -8,17 +8,20 @@
 
 
 <ion-content padding>
-  <div>
-    <h1 ion-text>Test Mode: {{testModeOn}}</h1>
-    
-    <h1 ion-text>Alert Name:</h1>
-    <h3 ion-text color="{{alertColor}}">{{alertName}}</h3>
-  </div>
-  <div>
-    <h1 ion-text>Location:</h1>
-    <h3 ion-text>{{floorName}}</h3>
-  </div>
-  <div>
-    <button ion-button full (click)="onSend()">Send alert</button>
-  </div>
+  <h1 ion-text>Test Mode: {{testModeOn}}</h1>
+  <h1 ion-text>Alert Name:</h1>
+  <h3 ion-text color="{{alertColor}}">{{alertName}}</h3>
+  <h1 ion-text>Location:</h1>
+  <h3 ion-text>{{floorName}}</h3>
+  <h1 ion-text>Note:</h1>
+  <h3 ion-text>{{note}}</h3>
+  <button ion-button full (click)="onSend()">Send alert</button>
+  <div class="div1" id="div1">
+      <div>
+        <img class="" src="{{floorPlanURL}}">
+      </div>
+      <div [hidden]="sniperHidden" id="div3" class="div3">
+        <img src="./../../assets/imgs/red_sniper.png">
+      </div>
+    </div>
 </ion-content>

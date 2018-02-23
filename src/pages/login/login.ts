@@ -106,6 +106,5 @@ export class LoginPage {
       ]
     });
     ipAlert.present();
-    console.log(this.ipAddress);
   }
 }

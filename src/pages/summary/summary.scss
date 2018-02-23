@@ -1,3 +1,33 @@
 page-summary {
 
+    .div1 {
+        position:absolute;
+        width:90%;
+        height: 90%;
+        visibility:visible;
+        z-index:5
+    }
+    .div2 {
+    
+        visibility:hidden;
+        z-index:1;
+    }
+    
+    .div3 {
+        position:absolute;
+        visibility:visible;
+        z-index:10;
+        font-family:monospace;
+        font-size:20px;
+        font-weight:900;
+        color:black;}
+
+    .div4 {
+        position:absolute;
+        visibility:hidden;
+        z-index:10;
+        font-family:monospace;
+        font-size:20px;
+        font-weight:900;
+        color:black;}
 }

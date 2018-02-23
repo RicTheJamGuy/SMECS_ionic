@@ -1,7 +1,7 @@
 import { Storage } from '@ionic/storage';
 import { WebProvider } from './../../providers/web/web';
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, Gesture, Content, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Gesture, Content, AlertController } from 'ionic-angular';
 
 import { HomePage } from '../home/home';
 import { NotesPage } from '../notes/notes';
@@ -26,23 +26,20 @@ export class FloorLocationPage {
   testModeOn: boolean;
   sniperCoordinateX: any;
   sniperCoordinateY: any;
-  ipAddress: any;
 
   testMode = 'testModeOff';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private web: WebProvider,
-    public storage: Storage, private toastCtrl: ToastController) {
+    public storage: Storage, private alertCtrl:AlertController) {
   }
 
-  ionViewWillEnter() {
+  ionViewDidLoad() {
     this.data = this.navParams.data;
     this.floorPlan = this.data.floorPlan;
-    console.log(this.floorPlan);
 
     this.storage.get('ipAddress')
       .then((ipAddress) => {
-        this.ipAddress = ipAddress;
-        this.floorPlanURL = 'http://' + this.ipAddress + ':1000/public/floorPlans/' + this.floorPlan
+        this.floorPlanURL = 'http://' + ipAddress + '/public/floorPlans/' + this.floorPlan
       }
       );
 
@@ -59,7 +56,6 @@ export class FloorLocationPage {
   getFloorLocation() {
     this.web.floorLocationGet(this.data._id, this.token)
       .then(response => {
-        console.log(response);
         if (response.success == true) {
           this.testModeOn = response.testModeOn;
           this.testModeOnArrays = response.testModeOnArrays;
@@ -84,9 +80,9 @@ export class FloorLocationPage {
     document.getElementById("div2").style.top = this.sniperCoordinateY + 'px';
   }
 
-  onFloorLocation(sniperCoordinateX, sniperCoordinateY) {
+  onFloorLocation() {
     var data: any; //this will contain all the data the goes to the next page.
-    this.web.floorLocationPost(this.token, this.data._id, this.data.testModeON, sniperCoordinateX, sniperCoordinateY)
+    this.web.floorLocationPost(this.token, this.data._id, this.data.testModeON, this.sniperCoordinateX, this.sniperCoordinateY)
       .then(response => {
         if (response.success == true) {
           data = {
@@ -95,14 +91,14 @@ export class FloorLocationPage {
           if (response.redirect == 'notes') this.navCtrl.push(NotesPage, data);
         }
         else {
-          // setting up toast
-          const toast = this.toastCtrl.create({
-            message: response.message,
-            duration: 2000,
-            position: 'middle'
+          let alert = this.alertCtrl.create({
+            title: 'Error',
+            subTitle: response.message,
+            buttons: ['Dismiss']
           });
-          toast.present();
+          alert.present();
         }
+        if (response.redirect == 'home') this.navCtrl.popToRoot;
       })
   }
 

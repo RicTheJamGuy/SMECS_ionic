@@ -1,9 +1,8 @@
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
 import { WebProvider } from './../../providers/web/web';
-import { HomePage } from '../home/home';
 import { SummaryPage } from './../summary/summary';
 
 @IonicPage()
@@ -16,13 +15,14 @@ export class NotesPage {
   data: any;
   notePlaceholder: string;
   title: string;
-  testModeOnArrays: any[];
   testModeOn: boolean;
+
+  notes: string;
 
   testMode = 'testModeOff';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private web: WebProvider,
-    public storage: Storage, private toastCtrl:ToastController) {
+    public storage: Storage, private alertCtrl:AlertController) {
 
   }
   ionViewDidLoad() {
@@ -43,11 +43,10 @@ export class NotesPage {
       .then(response => {
         if (response.success == true) {
           this.testModeOn = response.testModeOn;
-          this.testModeOnArrays = response.testModeOnArrays;
           this.title = response.title;
           this.notePlaceholder = response.notePlaceholder;
         }
-        else this.navCtrl.setRoot(HomePage);
+        else this.navCtrl.popToRoot();
       })
   }
   
@@ -61,16 +60,15 @@ export class NotesPage {
             _id: this.data._id
           }
           if (response.redirect == 'summary') this.navCtrl.push(SummaryPage, data);
-          if (response.redirect == 'home') this.navCtrl.push(HomePage);
+          if (response.redirect == 'home') this.navCtrl.popToRoot();
         }
         else {
-          // setting up toast
-          const toast = this.toastCtrl.create({
-            message: response.message,
-            duration: 2000,
-            position: 'middle'
+          let alert = this.alertCtrl.create({
+            title: 'Error',
+            subTitle: response.message,
+            buttons: ['Dismiss']
           });
-          toast.present();
+          alert.present();
         }
       })
   }
